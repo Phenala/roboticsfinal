@@ -1,0 +1,3 @@
+float32 base_main
+float32 arm_hinge
+float32 hand_arm

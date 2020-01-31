@@ -1,0 +1,363 @@
+<?xml version="1.0"?>
+<sdf version="1.4">
+
+    <model name="Arm">
+    <link name="arm_base">
+    <pose>0 0 0 0 0 0</pose><inertial>
+        <mass>5000.0</mass>
+        <inertia> <!-- inertias are tricky to compute -->
+          <!-- http://gazebosim.org/tutorials?tut=inertia&cat=build_robot -->
+          <ixx>13.38</ixx>       <!-- for a box: ixx = 0.083 * mass * (y*y + z*z) -->
+          <ixy>0.0</ixy>         <!-- for a box: ixy = 0 -->
+          <ixz>0.0</ixz>         <!-- for a box: ixz = 0 -->
+          <iyy>13.38</iyy>       <!-- for a box: iyy = 0.083 * mass * (x*x + z*z) -->
+          <iyz>0.0</iyz>         <!-- for a box: iyz = 0 -->
+          <izz>13.38</izz>       <!-- for a box: izz = 0.083 * mass * (x*x + y*y) -->
+        </inertia>
+      </inertial>
+    <visual name="arm_base_vis">
+        <geometry>
+            <box>
+                <size>0.4 0.4 0.4</size>
+            </box>
+        </geometry>
+    </visual>
+    <collision name="arm_base_col">
+    
+        <geometry>
+            <box>
+                <size>0.2 0.2 0.2</size>
+            </box>
+        </geometry>
+    </collision>
+</link>
+ <joint type="revolute" name="base_main">
+        <pose>0 0.2 0.4 0 0 0</pose>
+        <child>main_body</child>
+        <parent>arm_base</parent>
+
+        <axis>
+          <xyz>0 1 0</xyz>
+          <dynamics>
+            <friction>0.05</friction>
+            <damping>0.3</damping>
+        </dynamics>
+           <limit>
+            <upper>2</upper>
+            <lower>-1</lower>
+          </limit> 
+        </axis>
+      </joint>
+
+      
+      <link name="main_body">
+      <pose>0 0 0.4 0 0 0</pose>
+      <inertial>
+        <mass>1.0</mass>
+        <inertia> <!-- inertias are tricky to compute -->
+          <!-- http://gazebosim.org/tutorials?tut=inertia&cat=build_robot -->
+          <ixx>0.084</ixx>       <!-- for a box: ixx = 0.083 * mass * (y*y + z*z) -->
+          <ixy>0.0</ixy>         <!-- for a box: ixy = 0 -->
+          <ixz>0.0</ixz>         <!-- for a box: ixz = 0 -->
+          <iyy>0.084</iyy>       <!-- for a box: iyy = 0.083 * mass * (x*x + z*z) -->
+          <iyz>0.0</iyz>         <!-- for a box: iyz = 0 -->
+          <izz>0.0020086</izz>       <!-- for a box: izz = 0.083 * mass * (x*x + y*y) -->
+        </inertia>
+      </inertial>
+        <collision name="main_collision">
+          <geometry>
+            <box>
+              <size>0.11 0.11 1</size>
+            </box>
+          </geometry>
+        </collision>
+
+        <visual name="main_visual">
+          <geometry>
+            <box>
+              <size>0.11 0.11 1</size>
+            </box>
+          </geometry>
+        </visual>
+      </link>
+      <link name="articulator">
+        <pose>0 0 1.11 0 0 0</pose>
+        <collision name="articulator_collision">
+          <geometry>
+            <box>
+              <size>0.11 0.11 0.4</size>
+            </box>
+          </geometry>
+        </collision>
+        <visual name="articulator_visual">
+          <geometry>
+            <box>
+              <size>0.11 0.11 0.4</size>
+            </box>
+          </geometry>
+        </visual>
+      </link>
+
+      <joint type="revolute" name="arm_hinge">
+        <pose>-0.055 -0.055 -0.2 0 0 0</pose>
+
+        <parent>main_body</parent>
+        <child>articulator</child>
+
+        <axis>
+          <xyz>0 1 0</xyz>
+          <dynamics>
+            <friction>0.05</friction>
+            <damping>0.13</damping>
+        </dynamics>
+           <limit>
+            <upper>0.4</upper>
+            <lower>-1.4</lower>
+          </limit> 
+        </axis>
+      </joint>
+
+
+      <joint type="revolute" name="hand_arm">
+        <pose>-0.11 -0.055 -0.1 0 0 0</pose>
+
+        <parent>articulator</parent>
+        <child>hand</child>
+
+        <axis>
+          <xyz>0 1 0</xyz>
+          <dynamics>
+            <friction>0.05</friction>
+            <damping>0.23</damping>
+        </dynamics>
+
+           <limit>
+            <upper>0.4</upper>
+            <lower>-0.8</lower>
+          </limit> 
+        </axis>
+      </joint>
+
+      <link name="hand">
+        <pose>0 0 1.4 0 0 0</pose>
+        <collision name="hand_collision">
+          <geometry>
+            <box>
+              <size>0.11 0.11 0.2</size>
+            </box>
+          </geometry>
+        </collision>
+        <visual name="hand_visual">
+          <geometry>
+            <box>
+              <size>0.11 0.11 0.2</size>
+            </box>
+          </geometry>
+        </visual>
+      </link>
+
+
+
+
+
+
+<link name="palm">
+            <pose>0.0 0.0 1.5 0 0 0</pose>
+            <inertial>
+                <inertia>
+                    <ixx>0.01</ixx>
+                    <ixy>0</ixy>
+                    <ixz>0</ixz>
+                    <iyy>0.01</iyy>
+                    <iyz>0</iyz>
+                    <izz>0.01</izz>
+                </inertia>
+                <mass>0.5</mass>
+            </inertial>
+            <collision name="collision">
+                <geometry>
+                    <box>
+                        <size>0.1 0.2 0.1</size>
+                    </box>
+                </geometry>
+            </collision>
+            <visual name="visual">
+                <geometry>
+                    <box>
+                        <size>0.1 0.2 0.1</size>
+                    </box>
+                </geometry>
+                <material>
+                    <script>Gazebo/Red</script>
+                </material>
+            </visual>
+        </link>
+        <link name="left_finger">
+            <pose>0.1 0.2 1.5 0 0 -0.78539</pose>
+            <inertial>
+                <inertia>
+                    <ixx>0.01</ixx>
+                    <ixy>0</ixy>
+                    <ixz>0</ixz>
+                    <iyy>0.01</iyy>
+                    <iyz>0</iyz>
+                    <izz>0.01</izz>
+                </inertia>
+                <mass>0.1</mass>
+            </inertial>
+            <collision name="collision">
+                <geometry>
+                    <box>
+                        <size>0.1 0.3 0.1</size>
+                    </box>
+                </geometry>
+            </collision>
+            <visual name="visual">
+                <geometry>
+                    <box>
+                        <size>0.1 0.3 0.1</size>
+                    </box>
+                </geometry>
+                <material>
+                    <script>Gazebo/Blue</script>
+                </material>
+            </visual>
+        </link>
+        <link name="left_finger_tip">
+            <pose>0.336 0.3 1.5 0 0 1.5707</pose>
+            <inertial>
+                <inertia>
+                    <ixx>0.01</ixx>
+                    <ixy>0</ixy>
+                    <ixz>0</ixz>
+                    <iyy>0.01</iyy>
+                    <iyz>0</iyz>
+                    <izz>0.01</izz>
+                </inertia>
+                <mass>0.1</mass>
+            </inertial>
+            <collision name="collision">
+                <geometry>
+                    <box>
+                        <size>0.1 0.2 0.1</size>
+                    </box>
+                </geometry>
+            </collision>
+            <visual name="visual">
+                <geometry>
+                    <box>
+                        <size>0.1 0.2 0.1</size>
+                    </box>
+                </geometry>
+                <material>
+                    <script>Gazebo/Blue</script>
+                </material>
+            </visual>
+        </link>
+        <link name="right_finger">
+            <pose>0.1 -0.2 1.5 0 0 .78539</pose>
+            <inertial>
+                <inertia>
+                    <ixx>0.01</ixx>
+                    <ixy>0</ixy>
+                    <ixz>0</ixz>
+                    <iyy>0.01</iyy>
+                    <iyz>0</iyz>
+                    <izz>0.01</izz>
+                </inertia>
+                <mass>0.1</mass>
+            </inertial>
+            <collision name="collision">
+                <geometry>
+                    <box>
+                        <size>0.1 0.3 0.1</size>
+                    </box>
+                </geometry>
+            </collision>
+            <visual name="visual">
+                <geometry>
+                    <box>
+                        <size>0.1 0.3 0.1</size>
+                    </box>
+                </geometry>
+                <material>
+                    <script>Gazebo/Green</script>
+                </material>
+            </visual>
+        </link>
+        <link name="right_finger_tip">
+            <pose>0.336 -0.3 1.5 0 0 1.5707</pose>
+            <inertial>
+                <inertia>
+                    <ixx>0.01</ixx>
+                    <ixy>0</ixy>
+                    <ixz>0</ixz>
+                    <iyy>0.01</iyy>
+                    <iyz>0</iyz>
+                    <izz>0.01</izz>
+                </inertia>
+                <mass>0.1</mass>
+            </inertial>
+            <collision name="collision">
+                <geometry>
+                    <box>
+                        <size>0.1 0.2 0.1</size>
+                    </box>
+                </geometry>
+            </collision>
+            <visual name="visual">
+                <geometry>
+                    <box>
+                        <size>0.1 0.2 0.1</size>
+                    </box>
+                </geometry>
+                <material>
+                    <script>Gazebo/Green</script>
+                </material>
+            </visual>
+        </link>
+
+        <joint name="palm_left_finger" type="revolute">
+            <pose>0 -0.15 0 0 0 0</pose>
+            <child>left_finger</child>
+            <parent>palm</parent>
+            <axis>
+                <limit>
+                    <lower>-0.4</lower>
+                    <upper>0.4</upper>
+                </limit>
+                <xyz>0 0 1</xyz>
+            </axis>
+        </joint>
+        <joint name="left_finger_tip" type="fixed">
+            <pose>0 0.1 0 0 0 0</pose>
+            <child>left_finger_tip</child>
+            <parent>left_finger</parent>
+        </joint>
+        <joint name="palm_right_finger" type="revolute">
+            <pose>0 0.15 0 0 0 0</pose>
+            <child>right_finger</child>
+            <parent>palm</parent>
+            <axis>
+                <limit>
+                    <lower>-0.4</lower>
+                    <upper>0.4</upper>
+                </limit>
+                <xyz>0 0 1</xyz>
+            </axis>
+        </joint>
+        <joint name="right_finger_tip" type="fixed">
+            <pose>0 0.1 0 0 0 0</pose>
+            <child>right_finger_tip</child>
+            <parent>right_finger</parent>
+        </joint>
+
+
+        <joint name="griper_hand" type="fixed">
+            <pose>0 0.1 0 0 0 0</pose>
+            <child>palm</child>
+            <parent>hand</parent>
+        </joint>
+        <plugin name="arm_angle" filename="libarm_angle.so"/>
+    </model>        
+</sdf>
