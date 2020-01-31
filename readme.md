@@ -18,7 +18,7 @@ Group Members|ID
 ### 1. Creating The Robots
 
 The two wheeled robot along with the additional quadruped and six-wheeled robot are in the 
-*robots.world* file in the project/robot directory.
+*robots.world* file in the roboticsfinal/robot directory.
 
 ![Image of Robots](https://i.imgur.com/zicJnJw.jpg)
 
@@ -27,8 +27,8 @@ Models:
 
 To preview the world:
 
-- Copy models in project/robot/models to .gazebo/models
-- Open terminal in projects/robot directory and run `gazebo robots.world`
+- Copy models in roboticsfinal/robot/models to .gazebo/models
+- Open terminal in roboticsfinal/robot directory and run `gazebo robots.world`
  *Warning: World will fail to open if models are not copied.*
 
 
@@ -57,7 +57,7 @@ The sensor data is available on the following topics:
 All the robots have plugins attached that allows locomotion within the world.
 To run the plugin:
 
-- Go to the projects folder on terminal.
+- Go to the roboticsfinal/robot folder on terminal.
 - Run `export GAZEBO_PLUGIN_PATH=$HOME/lab/project/robot/twowheel/build:$GAZEBO_PLUGIN_PATH` *Replace ($HOME/lab) with the absolute path of the directory.*
 - `gzserver -u robots.world`
 - Open new terminal, run `gzclient`
@@ -67,6 +67,6 @@ To run the plugin:
 
 ### 4. ROSLaunch World
 
-To start the world with roslaunch, go to the project/robot/robotros directory and run:
+To start the world with roslaunch, go to the roboticsfinal/robot/robotros directory and run:
 - `source devel/setup.bash`
 - `roslaunch robot_gazebo robots.launch`
